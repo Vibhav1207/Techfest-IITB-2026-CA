@@ -635,3 +635,131 @@ body {
 .border-node-red:hover { border-color: rgba(255, 0, 60, 0.65); }
 .border-node-gold { border-color: rgba(255, 191, 0, 0.2); }
 .border-node-gold:hover { border-color: rgba(255, 191, 0, 0.65); }
+
+/* === Premium Alliance Network Marquee & Cybernetic Styles === */
+:root {
+  --marquee-duration-left: 28s;
+  --marquee-duration-right: 32s;
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --marquee-duration-left: 38s;
+    --marquee-duration-right: 44s;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --marquee-duration-left: 48s;
+    --marquee-duration-right: 56s;
+  }
+}
+
+@keyframes marquee-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-right {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-marquee-left {
+  display: flex;
+  width: max-content;
+  animation: marquee-left var(--marquee-duration-left) linear infinite;
+}
+
+.animate-marquee-right {
+  display: flex;
+  width: max-content;
+  animation: marquee-right var(--marquee-duration-right) linear infinite;
+}
+
+.sponsor-card {
+  position: relative;
+  background: rgba(8, 8, 8, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 243, 255, 0.12);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7), inset 0 0 10px rgba(0, 243, 255, 0.02);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+}
+
+.sponsor-card:hover {
+  border-color: rgba(0, 243, 255, 0.5);
+  background: rgba(12, 12, 12, 0.85);
+  box-shadow: 0 0 30px rgba(0, 243, 255, 0.22), inset 0 0 15px rgba(182, 0, 248, 0.15);
+  transform: translateY(-4px) scale(1.025);
+}
+
+.sponsor-card-grid {
+  background-size: 10px 10px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 243, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 243, 255, 0.02) 1px, transparent 1px);
+}
+
+@keyframes laser-sweep {
+  0% {
+    top: -5%;
+  }
+  50% {
+    top: 105%;
+  }
+  100% {
+    top: -5%;
+  }
+}
+
+.cyber-laser-scanner {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00f3ff, #b600f8, #00f3ff, transparent);
+  box-shadow: 0 0 8px #00f3ff, 0 0 12px #b600f8;
+  animation: laser-sweep 4s ease-in-out infinite;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.cyber-bracket {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-color: rgba(0, 243, 255, 0.25);
+  border-style: solid;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.sponsor-card:hover .cyber-bracket {
+  border-color: #00f3ff;
+  filter: drop-shadow(0 0 3px #00f3ff);
+}
+
+.cyber-bracket-tl { top: 6px; left: 6px; border-width: 1.5px 0 0 1.5px; }
+.cyber-bracket-tr { top: 6px; right: 6px; border-width: 1.5px 1.5px 0 0; }
+.cyber-bracket-bl { bottom: 6px; left: 6px; border-width: 0 0 1.5px 1.5px; }
+.cyber-bracket-br { bottom: 6px; right: 6px; border-width: 0 1.5px 1.5px 0; }
+
+.tech-grid-overlay {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 243, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 243, 255, 0.015) 1px, transparent 1px);
+}
+

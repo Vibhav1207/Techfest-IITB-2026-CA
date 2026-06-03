@@ -300,6 +300,145 @@ const getThemedGlowColor = (index: number) => {
   return "";
 };
 
+const partners = [
+  {
+    name: "SBI",
+    category: "BANKING SYSTEMS",
+    techStack: "Core Banking Systems / NEFT",
+    allianceTier: "ALLIANCE PARTNER",
+    status: "SYS_FEED_OK",
+    logo: (
+      <svg viewBox="0 0 24 24" className="w-8 h-8 text-primary-container" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <rect x="3" y="10" width="18" height="11" rx="1" />
+        <path d="M12 2L2 9h20L12 2zM6 10v11M10 10v11M14 10v11M18 10v11" />
+      </svg>
+    )
+  },
+  {
+    name: "IDFC BANK",
+    category: "FINTECH SECURE",
+    techStack: "Digital Ledgers / Web3 Pay",
+    allianceTier: "ALLIANCE PARTNER",
+    status: "SYNC_ACTIVE",
+    logo: (
+      <svg viewBox="0 0 24 24" className="w-8 h-8 text-secondary-fixed" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+      </svg>
+    )
+  },
+  {
+    name: "L&T GROUPS",
+    category: "INFRASTRUCTURE",
+    techStack: "Structural Cyber-Systems",
+    allianceTier: "ALLIANCE PARTNER",
+    status: "NODE_SECURE",
+    logo: (
+      <svg viewBox="0 0 24 24" className="w-8 h-8 text-primary-fixed" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M4 4h16v16H4zM4 12h16M12 4v16" />
+        <circle cx="12" cy="12" r="4" fill="currentColor" opacity="0.1" />
+      </svg>
+    )
+  },
+  {
+    name: "INDIAN OIL",
+    category: "ENERGY MATRIX",
+    techStack: "Super-Refined Plasma Fuel",
+    allianceTier: "ALLIANCE PARTNER",
+    status: "FLOW_STB",
+    logo: (
+      <svg viewBox="0 0 24 24" className="w-8 h-8 text-secondary-fixed" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7v10M7 12h10" />
+        <circle cx="12" cy="12" r="4" fill="currentColor" className="animate-pulse" />
+      </svg>
+    )
+  },
+  {
+    name: "NPCI",
+    category: "PAYMENT SYSTEM",
+    techStack: "Unified Payments Interface",
+    allianceTier: "ALLIANCE PARTNER",
+    status: "CIPHER_OK",
+    logo: (
+      <svg viewBox="0 0 24 24" className="w-8 h-8 text-primary-container animate-pulse" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        <path d="M9 11l2 2 4-4" />
+      </svg>
+    )
+  },
+  {
+    name: "JIO FINANCE",
+    category: "FINANCIAL NODE",
+    techStack: "Sub-space Credit Networks",
+    allianceTier: "ALLIANCE PARTNER",
+    status: "SYS_FEED_OK",
+    logo: (
+      <svg viewBox="0 0 24 24" className="w-8 h-8 text-primary-fixed" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M8 12h8M12 8v8" />
+        <circle cx="12" cy="12" r="3" strokeDasharray="2 2" />
+      </svg>
+    )
+  }
+];
+
+function SponsorCard({ sponsor }: { sponsor: any }) {
+  return (
+    <div className="sponsor-card sponsor-card-grid w-[280px] sm:w-[320px] h-[150px] sm:h-[160px] p-4 sm:p-5 flex flex-col justify-between overflow-hidden group relative select-none">
+      {/* Glowing brackets in corners */}
+      <span className="cyber-bracket cyber-bracket-tl" />
+      <span className="cyber-bracket cyber-bracket-tr" />
+      <span className="cyber-bracket cyber-bracket-bl" />
+      <span className="cyber-bracket cyber-bracket-br" />
+
+      {/* Laser scanner and scanlines inside card */}
+      <div className="cyber-laser-scanner opacity-0 group-hover:opacity-40 transition-opacity duration-300" />
+      <div className="scanline-sweep-effect opacity-10 group-hover:opacity-20 transition-opacity duration-300" />
+
+      {/* Card Header: Category & Status */}
+      <div className="flex justify-between items-center w-full relative z-10">
+        <span className="font-code-sm text-[8px] sm:text-[9px] text-secondary-fixed opacity-70 tracking-widest uppercase">
+          {sponsor.category}
+        </span>
+        <div className="flex items-center gap-1.5">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary-container"></span>
+          </span>
+          <span className="font-code-sm text-[8px] text-primary-container/85 tracking-wider font-semibold">
+            {sponsor.status}
+          </span>
+        </div>
+      </div>
+
+      {/* Card Body: Logo & Name */}
+      <div className="flex items-center gap-3 sm:gap-4 py-1 sm:py-2 relative z-10">
+        <div className="p-2 sm:p-2.5 bg-surface/50 border border-primary/15 rounded-sm group-hover:border-primary/35 group-hover:bg-surface-container-high/65 transition-all duration-300 flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 shadow-md">
+          {sponsor.logo}
+        </div>
+        <div className="flex flex-col">
+          <h4 className="font-headline-md text-[14px] sm:text-[16px] text-primary uppercase font-bold tracking-wider group-hover:text-glow transition-all duration-300">
+            {sponsor.name}
+          </h4>
+          <span className="font-code-sm text-[8px] sm:text-[9px] text-on-surface-variant/45 tracking-wider">
+            {sponsor.allianceTier}
+          </span>
+        </div>
+      </div>
+
+      {/* Card Footer: Tech Stack details */}
+      <div className="w-full border-t border-primary/5 pt-1.5 sm:pt-2 flex justify-between items-center text-[8px] sm:text-[9px] font-code-sm text-on-surface-variant/40 relative z-10 transition-colors duration-300 group-hover:border-primary/20">
+        <span className="group-hover:text-primary transition-colors">
+          TECH_STACK: <span className="text-on-surface-variant/70 group-hover:text-primary-fixed transition-colors">{sponsor.techStack}</span>
+        </span>
+        <span className="opacity-0 group-hover:opacity-100 text-primary-container tracking-wider transition-all duration-300 font-bold">
+          [CONNECTED]
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [loadingLines, setLoadingLines] = useState<string[]>([]);
@@ -854,6 +993,55 @@ export default function Home() {
             </motion.div>
 
           </motion.div>
+        </section>
+
+        {/* Alliance Partners Premium Marquee Section */}
+        <section className="relative py-20 mb-20 w-full border-t border-primary/10 overflow-hidden bg-[rgba(5,5,5,0.4)]">
+          {/* Cybernetic grid/line overlays */}
+          <div className="absolute inset-0 tech-grid-overlay opacity-30 pointer-events-none" />
+          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+          <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-secondary/20 to-transparent" />
+          
+          <div className="max-w-container-max mx-auto px-6 md:px-12 relative z-10">
+            {/* Section Header */}
+            <div className="flex flex-col items-center text-center mb-12 relative">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-container"></span>
+                </span>
+                <span className="font-code-sm text-[10px] text-secondary-fixed tracking-[0.3em] uppercase font-bold">
+                  ALLIANCE MATRIX // ACTIVE
+                </span>
+              </div>
+              
+              <motion.h2
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7 }}
+                className="font-headline-lg text-headline-lg text-primary uppercase tracking-[0.08em] text-glow font-bold"
+              >
+                OUR PARTNERS
+              </motion.h2>
+            </div>
+
+            {/* Single Marquee track */}
+            <div className="w-full overflow-hidden py-4 select-none relative">
+              {/* Subtle vignettes on the edges to fade out the scrolling cards */}
+              <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#050505] to-transparent z-20 pointer-events-none" />
+              <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#050505] to-transparent z-20 pointer-events-none" />
+
+              {/* Row: Right to Left */}
+              <div className="flex w-full overflow-hidden group/track">
+                <div className="animate-marquee-left flex gap-6 py-2 group-hover/track:[animation-play-state:paused]">
+                  {[...partners, ...partners, ...partners].map((sponsor, index) => (
+                    <SponsorCard key={`partner-${index}`} sponsor={sponsor} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         <section className="relative py-24 mb-24 w-full border-t border-primary/10">
