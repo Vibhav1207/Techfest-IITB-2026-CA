@@ -385,17 +385,15 @@ const partners = [
 function SponsorCard({ sponsor }: { sponsor: any }) {
   return (
     <div className="sponsor-card sponsor-card-grid w-[280px] sm:w-[320px] h-[150px] sm:h-[160px] p-4 sm:p-5 flex flex-col justify-between overflow-hidden group relative select-none">
-      {/* Glowing brackets in corners */}
+      
       <span className="cyber-bracket cyber-bracket-tl" />
       <span className="cyber-bracket cyber-bracket-tr" />
       <span className="cyber-bracket cyber-bracket-bl" />
       <span className="cyber-bracket cyber-bracket-br" />
 
-      {/* Laser scanner and scanlines inside card */}
       <div className="cyber-laser-scanner opacity-0 group-hover:opacity-40 transition-opacity duration-300" />
       <div className="scanline-sweep-effect opacity-10 group-hover:opacity-20 transition-opacity duration-300" />
 
-      {/* Card Header: Category & Status */}
       <div className="flex justify-between items-center w-full relative z-10">
         <span className="font-code-sm text-[8px] sm:text-[9px] text-secondary-fixed opacity-70 tracking-widest uppercase">
           {sponsor.category}
@@ -411,7 +409,6 @@ function SponsorCard({ sponsor }: { sponsor: any }) {
         </div>
       </div>
 
-      {/* Card Body: Logo & Name */}
       <div className="flex items-center gap-3 sm:gap-4 py-1 sm:py-2 relative z-10">
         <div className="p-2 sm:p-2.5 bg-surface/50 border border-primary/15 rounded-sm group-hover:border-primary/35 group-hover:bg-surface-container-high/65 transition-all duration-300 flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 shadow-md">
           {sponsor.logo}
@@ -426,7 +423,6 @@ function SponsorCard({ sponsor }: { sponsor: any }) {
         </div>
       </div>
 
-      {/* Card Footer: Tech Stack details */}
       <div className="w-full border-t border-primary/5 pt-1.5 sm:pt-2 flex justify-between items-center text-[8px] sm:text-[9px] font-code-sm text-on-surface-variant/40 relative z-10 transition-colors duration-300 group-hover:border-primary/20">
         <span className="group-hover:text-primary transition-colors">
           TECH_STACK: <span className="text-on-surface-variant/70 group-hover:text-primary-fixed transition-colors">{sponsor.techStack}</span>
@@ -995,15 +991,14 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* Alliance Partners Premium Marquee Section */}
         <section className="relative py-20 mb-20 w-full border-t border-primary/10 overflow-hidden bg-[rgba(5,5,5,0.4)]">
-          {/* Cybernetic grid/line overlays */}
+          
           <div className="absolute inset-0 tech-grid-overlay opacity-30 pointer-events-none" />
           <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
           <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-secondary/20 to-transparent" />
           
           <div className="max-w-container-max mx-auto px-6 md:px-12 relative z-10">
-            {/* Section Header */}
+            
             <div className="flex flex-col items-center text-center mb-12 relative">
               <div className="flex items-center gap-2 mb-3">
                 <span className="relative flex h-2 w-2">
@@ -1026,13 +1021,11 @@ export default function Home() {
               </motion.h2>
             </div>
 
-            {/* Single Marquee track */}
             <div className="w-full overflow-hidden py-4 select-none relative">
-              {/* Subtle vignettes on the edges to fade out the scrolling cards */}
+              
               <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#050505] to-transparent z-20 pointer-events-none" />
               <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#050505] to-transparent z-20 pointer-events-none" />
 
-              {/* Row: Right to Left */}
               <div className="flex w-full overflow-hidden group/track">
                 <div className="animate-marquee-left flex gap-6 py-2 group-hover/track:[animation-play-state:paused]">
                   {[...partners, ...partners, ...partners].map((sponsor, index) => (
@@ -1504,7 +1497,6 @@ export default function Home() {
           <div className="font-code-sm text-[80px] leading-none select-none">11111101010</div>
         </div>
       </footer>
-
 
     </>
   );
