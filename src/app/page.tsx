@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { ArrowUpRight, Terminal, Eye, HelpCircle, MemoryStick, Menu, X } from "lucide-react";
 
 interface TiltCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -385,7 +385,7 @@ const partners = [
 function SponsorCard({ sponsor }: { sponsor: any }) {
   return (
     <div className="sponsor-card sponsor-card-grid w-[280px] sm:w-[320px] h-[150px] sm:h-[160px] p-4 sm:p-5 flex flex-col justify-between overflow-hidden group relative select-none">
-      
+
       <span className="cyber-bracket cyber-bracket-tl" />
       <span className="cyber-bracket cyber-bracket-tr" />
       <span className="cyber-bracket cyber-bracket-bl" />
@@ -435,13 +435,114 @@ function SponsorCard({ sponsor }: { sponsor: any }) {
   );
 }
 
+function CustomCursor() {
+  const mouseX = useMotionValue(-100);
+  const mouseY = useMotionValue(-100);
+
+  const springConfig = { damping: 30, stiffness: 280, mass: 0.45 };
+  const springX = useSpring(mouseX, springConfig);
+  const springY = useSpring(mouseY, springConfig);
+
+  const [hovered, setHovered] = useState(false);
+  const [coords, setCoords] = useState({ x: -100, y: -100 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+      setCoords({ x: e.clientX, y: e.clientY });
+    };
+
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target) return;
+
+      const interactive = target.closest(
+        'a, button, [role="button"], .holo-module, .sponsor-card, .tilt-card, .know-more-btn, .btn-primary, .btn-premium-glow'
+      );
+      if (interactive) {
+        setHovered(true);
+      }
+    };
+
+    const handleMouseOut = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target) return;
+
+      const interactive = target.closest(
+        'a, button, [role="button"], .holo-module, .sponsor-card, .tilt-card, .know-more-btn, .btn-primary, .btn-premium-glow'
+      );
+      if (interactive) {
+        setHovered(false);
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseover", handleMouseOver);
+    window.addEventListener("mouseout", handleMouseOut);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseover", handleMouseOver);
+      window.removeEventListener("mouseout", handleMouseOut);
+    };
+  }, [mouseX, mouseY]);
+
+  return (
+    <div className="fixed inset-0 pointer-events-none z-[9999] hidden md:block">
+      {/* 1. Sleek Cyber Aura (Spring Lag) */}
+      <motion.div
+        style={{
+          x: springX,
+          y: springY,
+          translateX: "-50%",
+          translateY: "-50%",
+        }}
+        animate={{
+          scale: hovered ? 1.6 : 1,
+        }}
+        className={`fixed w-6 h-6 rounded-full blur-[6px] opacity-30 transition-colors duration-300 ${hovered ? "bg-secondary-container" : "bg-primary-container"
+          }`}
+      />
+
+      {/* 2. Sleek Spaceship/Pointer reticle (Instant for responsive navigation) */}
+      <div
+        className="fixed pointer-events-none transition-transform duration-200"
+        style={{
+          left: `${coords.x}px`,
+          top: `${coords.y}px`,
+          transform: `scale(${hovered ? 1.2 : 1})`,
+        }}
+      >
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          className="relative -left-1 -top-1"
+        >
+          <path
+            d="M2 2L9 22L12 12L22 9L2 2Z"
+            fill={hovered ? "#b600f8" : "#00f3ff"}
+            stroke="#ffffff"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+            style={{
+              filter: `drop-shadow(0 0 5px ${hovered ? "rgba(182, 0, 248, 0.7)" : "rgba(0, 243, 255, 0.7)"})`,
+            }}
+            className="transition-all duration-300"
+          />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [loadingLines, setLoadingLines] = useState<string[]>([]);
   const [progress, setProgress] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
-  const [hoveringNav, setHoveringNav] = useState(false);
   const [hoveredDiv, setHoveredDiv] = useState<number | null>(null);
 
   useEffect(() => {
@@ -482,13 +583,7 @@ export default function Home() {
     };
   }, []);
 
-  useEffect(() => {
-    const handleMouseCoords = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseCoords);
-    return () => window.removeEventListener("mousemove", handleMouseCoords);
-  }, []);
+  // Mouse coordinates logic handled by CustomCursor component
 
   const { scrollYProgress } = useScroll();
   const opacityText = useTransform(scrollYProgress, [0, 0.1], [1, 0.4]);
@@ -683,7 +778,7 @@ export default function Home() {
                   className="w-28 h-28 rounded-full object-cover relative z-10 animate-pulse-slow filter brightness-110 border border-primary/20 shadow-[0_0_20px_rgba(0,243,255,0.15)]"
                 />
               </div>
-              
+
               <div className="font-label-caps text-sm tracking-[0.35em] text-glow text-primary-fixed mb-2 font-bold">
                 {progress}% COMPLETE
               </div>
@@ -719,16 +814,7 @@ export default function Home() {
 
       <NeuralNetworkBackground />
 
-      <div
-        className="fixed w-8 h-8 rounded-full pointer-events-none z-[100] border border-primary/40 -translate-x-1/2 -translate-y-1/2 transition-transform duration-200 ease-out hidden md:block"
-        style={{
-          left: `${mousePos.x}px`,
-          top: `${mousePos.y}px`,
-          transform: `translate(-50%, -50%) scale(${hoveringNav ? 1.5 : 1})`,
-          boxShadow: "0 0 15px rgba(0, 243, 255, 0.3)",
-          backgroundColor: hoveringNav ? "rgba(0, 243, 255, 0.05)" : "transparent",
-        }}
-      />
+      <CustomCursor />
 
       <div className="fixed top-0 left-1/4 w-[1px] h-full circuit-line-v opacity-25 z-[-1] hidden md:block"></div>
       <div className="fixed top-0 left-3/4 w-[1px] h-full circuit-line-v opacity-25 z-[-1] hidden md:block"></div>
@@ -739,8 +825,6 @@ export default function Home() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="fixed top-0 w-full z-50 bg-surface/75 backdrop-blur-xl border-b border-primary/20 shadow-[0_0_20px_rgba(0,243,255,0.1)]"
-        onMouseEnter={() => setHoveringNav(true)}
-        onMouseLeave={() => setHoveringNav(false)}
       >
         <div className="flex justify-between items-center px-6 md:px-12 py-4 max-w-container-max mx-auto">
           <div className="font-headline-md text-[24px] text-primary tracking-tighter text-glow flex items-center gap-3 font-bold cursor-pointer hover:scale-102 transition-transform">
@@ -960,8 +1044,8 @@ export default function Home() {
                   <span className="font-code-sm text-[10px] text-secondary-fixed opacity-70 tracking-wider">NETWORK_CAPACITY</span>
                   <span className="font-code-sm text-[9px] text-primary/40 uppercase">[CONN_LIVE]</span>
                 </div>
-                <span className="font-headline-md text-headline-md text-primary font-bold text-glow">500,000+</span>
-                <span className="font-label-caps text-[10px] text-on-surface-variant mt-1 tracking-wider font-semibold">PARTICIPANTS</span>
+                <span className="font-headline-md text-headline-md text-primary font-bold text-glow">180,000+</span>
+                <span className="font-label-caps text-[10px] text-on-surface-variant mt-1 tracking-wider font-semibold">FOOTFALL</span>
                 <div className="flex justify-between items-center w-full mt-3 text-[9px] font-code-sm text-on-surface-variant/40">
                   <span>LATENCY: 8.4ms</span>
                   <span>LOAD: 12%</span>
@@ -978,8 +1062,8 @@ export default function Home() {
                   <span className="font-code-sm text-[10px] text-secondary-fixed opacity-70 tracking-wider">GLOBAL_NODES</span>
                   <span className="font-code-sm text-[9px] text-primary/30 uppercase">[PING_OK]</span>
                 </div>
-                <span className="font-headline-md text-headline-md text-primary font-bold text-glow">100+</span>
-                <span className="font-label-caps text-[10px] text-on-surface-variant mt-1 tracking-wider font-semibold">NATIONS</span>
+                <span className="font-headline-md text-headline-md text-primary font-bold text-glow">2500+</span>
+                <span className="font-label-caps text-[10px] text-on-surface-variant mt-1 tracking-wider font-semibold">COLLEGES REACHED</span>
                 <div className="flex justify-between items-center w-full mt-3 text-[9px] font-code-sm text-on-surface-variant/40">
                   <span>PING: 140ms</span>
                   <span>IP: IPv6_ACTIVE</span>
@@ -992,13 +1076,13 @@ export default function Home() {
         </section>
 
         <section className="relative py-20 mb-20 w-full border-t border-primary/10 overflow-hidden bg-[rgba(5,5,5,0.4)]">
-          
+
           <div className="absolute inset-0 tech-grid-overlay opacity-30 pointer-events-none" />
           <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
           <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-secondary/20 to-transparent" />
-          
+
           <div className="max-w-container-max mx-auto px-6 md:px-12 relative z-10">
-            
+
             <div className="flex flex-col items-center text-center mb-12 relative">
               <div className="flex items-center gap-2 mb-3">
                 <span className="relative flex h-2 w-2">
@@ -1009,7 +1093,7 @@ export default function Home() {
                   ALLIANCE MATRIX // ACTIVE
                 </span>
               </div>
-              
+
               <motion.h2
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -1022,7 +1106,7 @@ export default function Home() {
             </div>
 
             <div className="w-full overflow-hidden py-4 select-none relative">
-              
+
               <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-[#050505] to-transparent z-20 pointer-events-none" />
               <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-[#050505] to-transparent z-20 pointer-events-none" />
 
@@ -1155,7 +1239,20 @@ export default function Home() {
                     <div className="h-[1px] w-full bg-gradient-to-r from-primary/50 to-transparent group-hover:from-primary transition-all"></div>
                   </div>
                 </div>
-                <div className="module-events overflow-hidden relative z-10">
+                <motion.div
+                  initial={false}
+                  animate={{
+                    height: hoveredDiv === i ? "auto" : 0,
+                    opacity: hoveredDiv === i ? 1 : 0,
+                    marginTop: hoveredDiv === i ? 12 : 0,
+                  }}
+                  transition={{
+                    height: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
+                    opacity: { duration: 0.25, ease: "easeInOut" },
+                    marginTop: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
+                  }}
+                  className="overflow-hidden relative z-10"
+                >
                   <ul className="font-code-sm text-[13px] text-on-surface-variant space-y-2 pl-8 list-none">
                     {div.events.map((event, j) => (
                       <li
@@ -1170,7 +1267,7 @@ export default function Home() {
                     <span>SECTOR: 0x{div.num}8F</span>
                     <span>BAUD: 9600</span>
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
             ))}
           </div>
@@ -1338,9 +1435,9 @@ export default function Home() {
                   <div className="relative w-64 h-64 md:w-72 md:h-72 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-500 z-10">
                     <div className={`absolute inset-0 rounded-full border animate-[spin_25s_linear_infinite] ${getRingBorderClass(i)}`}></div>
                     <div className="w-52 h-52 md:w-60 md:h-60 rounded-full overflow-hidden border-2 transition-all duration-500"
-                         style={{
-                           borderColor: "rgba(229, 226, 225, 0.18)"
-                         }}>
+                      style={{
+                        borderColor: "rgba(229, 226, 225, 0.18)"
+                      }}>
                       <img
                         alt={`${legend.title} Core`}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"

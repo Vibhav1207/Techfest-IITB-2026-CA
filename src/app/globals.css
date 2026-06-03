@@ -182,17 +182,7 @@ body {
   border-color: #00f3ff;
 }
 
-.module-events {
-  max-height: 0;
-  opacity: 0;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
 
-.holo-module:hover .module-events {
-  max-height: 300px;
-  opacity: 1;
-  margin-top: 12px;
-}
 
 .circuit-border {
   position: relative;
@@ -731,5 +721,12 @@ body {
   background-image: 
     linear-gradient(to right, rgba(0, 243, 255, 0.015) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(0, 243, 255, 0.015) 1px, transparent 1px);
+}
+
+@media (min-width: 768px) {
+  html, body, a, button, input, select, textarea, [role="button"], 
+  .holo-module, .sponsor-card, .tilt-card, .know-more-btn, .btn-primary, .btn-premium-glow {
+    cursor: none !important;
+  }
 }
 
